@@ -2,64 +2,26 @@ const express = require("express");
 
 const app = express();
 
-app.get(
-  "/user",
-  (req, res, next) => {
-    console.log("handling the route user!");
-    // res.send("I am response 1");
-    next();
-  },
-  (req, res, next) => {
-    console.log("handling the route user 2!!");
-    // res.send("I am response 2");
-    next();
-  },
-  (req, res, next) => {
-    console.log("handling the route user 3!!!");
-    // res.send("I am response 3");
-    next();
-  },
-  (req, res, next) => {
-    console.log("handling the route user 4!!!!");
-    // res.send("I am response 4");
-    next();
-  },
-  (req, res, next) => {
-    console.log("handling the route response 5 !!!!!!");
-    res.send("I am response 5");
-  },
-);
+const { adminAuth, userAuth } = require("./middlewares/auth");
 
-// This will handle only get call to user
-// app.get("/user", (req, res) => {
-//   res.send({ firsname: "Girdhar", lastname: "Gohel" });
-// });
+//Handle auth middleware for all GET, POST, etc requests
+app.use("/admin", adminAuth);
 
-app.post("/user", (req, res) => {
-  res.send("Data saved successfully to the database");
+app.post("/user/login", (req, res) => {
+  res.send("User logged in successfully");
 });
 
-app.delete("/user", (req, res) => {
-  res.send("Data deleted successfully");
+app.get("/user", userAuth, (req, res) => {
+  res.send("User data sent");
 });
 
-// app.use("/user", (req, res) => {
-//   res.send("default for handling url");
-// });
+app.get("/admin/getAllData", (req, res) => {
+  res.send("All Data sent");
+});
 
-// This will match all the HTTP method API calls to /test
-// app.use("/test", (req, res) => {
-//   res.send("Hi, I am tester tester!");
-// });
-
-// app.get("/user/:userId/:name/:password", (req, res) => {
-//   console.log(req.params);
-//   res.send({ firsname: "Girdhar" });
-// });
-
-// app.use("/", (req, res) => {
-//   res.send("Hello World...!");
-// });
+app.get("/admin/deleteUser", (req, res) => {
+  res.send("All data delete");
+});
 
 app.listen(3500, () => {
   console.log("server is successfully listening on port 3500...");
